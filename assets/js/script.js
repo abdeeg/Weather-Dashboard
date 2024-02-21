@@ -39,4 +39,39 @@ document.addEventListener("DOMContentLoaded", () => {
         "Error fetching weather data. Please try again later.";
     }
   });
+
+  function displayCurrentWeather(data) {
+    const temperature = (data.main.temp - 273.15).toFixed(2);
+    const weatherDescription = data.weather[0].description;
+
+    const weatherHtml = `
+        <h2>Current Weather in ${data.name}</h2>
+        <p>Temperature: ${temperature}°C</p>
+        <p>Description: ${weatherDescription}</p>
+    `;
+
+    weatherInfo.innerHTML = weatherHtml;
+  }
+
+  function display5DayForecast(data) {
+    const forecastHtml = `
+        <h2>5-Day Forecast</h2>
+        <div class="forecast-container">
+            ${data.list
+              .slice(0, 5)
+              .map(
+                (day) => `
+                <div class="forecast-day">
+                    <p>Date: ${day.dt_txt}</p>
+                    <p>Temperature: ${(day.main.temp - 273.15).toFixed(2)}°C</p>
+                    <p>Description: ${day.weather[0].description}</p>
+                </div>
+            `
+              )
+              .join("")}
+        </div>
+    `;
+
+    weatherInfo.innerHTML += forecastHtml;
+  }
 });
